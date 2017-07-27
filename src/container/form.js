@@ -78,7 +78,7 @@ resetForm() {
 			productNameValidError: false,
 			descriptionError: null,
 			descriptionRequireError: false,
-			descriptionMinMaxError: false
+
 		});
 	}
 
