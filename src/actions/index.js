@@ -5,7 +5,7 @@ import axios from "axios";
 
 export const addProduct = (product) =>({
     type:'ADD_PRODUCT',
-    product
+    payload : axios.post(Constant.saveProductUrl, product)
 })
 
 export const deleteProduct = (id) =>({

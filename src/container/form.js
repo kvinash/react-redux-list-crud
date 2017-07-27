@@ -150,12 +150,13 @@ class NameForm extends React.Component {
 
 		if (self.props.match.params && self.props.match.params.id) {
 			data.id = self.props.match.params.id
-			url = Constant.updateProductUrl;
+			//url = Constant.updateProductUrl;
+			this.props.edit_pro_details(data);
 			isEdit = true;
 		}
 
 		if (self.state.productNameError == 'success' && self.state.descriptionError == 'success') {
-			this.props.edit_pro_details(data);
+			this.props.add_pro_details(data);
         } else {
         	self.setState({ isFormSubmit: false });
         }

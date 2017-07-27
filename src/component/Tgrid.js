@@ -13,6 +13,7 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 /**redux functionalities */
 import { connect } from "react-redux";
 import { allProduct, deleteProduct } from "../actions";
+import * as TgridReducer from "../reducers";
 
 class Tgrid extends Component {
   constructor(props) {
@@ -24,30 +25,37 @@ class Tgrid extends Component {
       isOpen: false
     };
     this.priceFormatter = this.priceFormatter.bind(this);
-    this.getProducts = this.getProducts.bind(this);
+    console.log('c0',this.props)
   }
 
   componentDidMount() {
     //data that require after component load will goes here
+       const { dispatch } = this.props;
+    console.log('componentDidMount',this.props)
+  }
+  componentWillReceiveProps(nextProps){
+    if(nextProps.hasOwnProperty("delete_bool")){
+      if (nextProps.delete_bool) this.props.get_allpro();
+    }
+ }
+
+  componentWillUpdate(){
+    console.log('componentWillUpdate',this.props)
+    if(this.props.delete_bool){
+      this.props.get_allpro()
+    }
   }
 
+  shouldComponentUpdate(){
+     const { dispatch } = this.props;
+    console.log('shouldComponentUpdate',this.props)
+    return true
+  }
   componentWillMount() {
     const { dispatch } = this.props;
     this.props.get_allpro();
+    console.log('componentWillMount',this.props)
     // this.getProducts();
-  }
-
-  getProducts() {
-    const _this = this;
-    /**Shift in reducers */
-    // DataService.fetchData(Constant.getProductsUrl ,function (res) {
-    //     res.then(function(json) {
-    //         //console.log('Json', json)
-    //         _this.setState({
-    //             products: json
-    //         })
-    //     })
-    // });
   }
 
   priceFormatter(cell, row) {
@@ -64,31 +72,6 @@ class Tgrid extends Component {
       isOpen: true
     });
   }
-
-  // deleteProduct() {
-  //   const _this = this;
-  //   const deleteJson = {
-  //     id: this.state.deleteId
-  //   };
-  //   DataService.deleteData(
-  //     Constant.deleteProductUrl + "/" + this.state.deleteId,
-  //     deleteJson,
-  //     function(res) {
-  //       res.then(function(json) {
-  //         //console.log('Json', json)
-  //         _this.setState(
-  //           {
-  //             deleteId: "",
-  //             isOpen: false
-  //           },
-  //           function() {
-  //             _this.getProducts();
-  //           }
-  //         );
-  //       });
-  //     }
-  //   );
-  // }
 
   closeConfirmBox() {
     this.setState({
@@ -255,8 +238,28 @@ class ConfirmModel extends Component {
 }
 const mapStateToProps = state => {
 
-    const products = state ? state.data : [];
-    return { products };
+    // let store_state ={};
+    // store_state.products = state ? state.data : [];
+    // store_state.delete_pro = state && state.delete_pro ? state.delete_pro : false;
+    // console.log("map",state, state.delete_bool );
+    // if(state.delete_bool){
+    //   this.props.get_allpro()
+    //   state.delete_bool =false;
+    // } else {
+    //   return state;
+    // }
+    console.log("map", state)
+    if(state)
+    console.log("deletebool", state.delete_bool)
+    const products = TgridReducer.getEntityByKey(state, "products");
+    console.log("pro", products)
+    const delete_bool  = TgridReducer.getEntityByKey(state, "delete_bool");
+    
+    return {
+     products,
+     delete_bool
+    }
+    
 };
 
 const mapDispatchToProps = dispatch => {

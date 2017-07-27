@@ -4,48 +4,47 @@ import {NotificationContainer, NotificationManager} from 'react-notifications';
 import DataService from "../middlewares/dataService";
 import Constant from "../constant";
 
-const reducer = (state = [], action) => {
+export const getEntityByKey = (state, key) => {
+  if(state && state[key]){
+    return state[key];
+  }
+  return null;
+}
+
+const reducer = (state = {}, action) => {
   switch (action.type) {
     case "ALL_PRODUCT_PENDING": {
-      console.log("hell1", action.payload);
-      return state;
+      return {...state};
       break;
     }
     case "ALL_PRODUCT_FULFILLED": {
-      console.log("hell2", action);
-      console.log(action.payload);
-      //state.set("products",action.payload);
-      state.products = action.payload["data"];
-      console.log("hellllllloo",state);
-
+      let products = action.payload["data"];
+      let delete_bool = false
+      return {...state, products, delete_bool};
+      break;
+    }
+    case "ADD_PRODUCT_PENDING": {
       return action.payload;
       break;
     }
-     case "EDIT_PRODUCT_PENDING": {
-      console.log(state);
+    case "ADD_PRODUCT_FULFILLED": {
+      return true;
+      break;
+    }
+    case "EDIT_PRODUCT_PENDING": {
       return action.payload;
       break;
     }
-    case "EDIT_PRODUCT_FULLFILLED": {
-      console.log(action)
-      return true
+    case "EDIT_PRODUCT_FULFILLED": {
+      return true;
       break;
     }
-    case "DELETE_PRODUCT_PENDING": {
-      console.log(action)
-      state.delete_bool = false;
-      return state;      
-      break;
-    }
+  
     case "DELETE_PRODUCT_FULFILLED": {
-      console.log(action)
-      state.delete_bool = true;
-      console.log(state)
-      return state;
-      break;
+      let delete_bool = true;
+      return {...state, delete_bool};
+      break
     }
-    default:
-      return state;
   }
     
 };
