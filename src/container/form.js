@@ -11,6 +11,7 @@ import 'react-notifications/lib/notifications.css';
 /**Redux Functionality*/
 import { addProduct, editProduct} from '../actions';
 import { connect } from 'react-redux';
+import * as TgridReducer from "../reducers";
 
 let productNameSuccessFlag = false;
 let descriptionSuccessFlag = false;
@@ -61,8 +62,12 @@ class NameForm extends React.Component {
 	                })
 		}
 	}
-
-	resetForm() {
+	componentWillReceiveProps(nextProps){
+    if(nextProps.hasOwnProperty("delete_bool")){
+      if (nextProps.delete_bool){ this.resetForm(), this.setState({ isFormSubmit: false });}
+    }
+ }
+resetForm() {
 		this.setState({
 			productName: '', 
 			price: '10', 
@@ -157,6 +162,7 @@ class NameForm extends React.Component {
 
 		if (self.state.productNameError == 'success' && self.state.descriptionError == 'success') {
 			this.props.add_pro_details(data);
+			
         } else {
         	self.setState({ isFormSubmit: false });
         }
@@ -222,9 +228,12 @@ class NameForm extends React.Component {
 	}
 }
 const mapStateToProps=(state)=>{
-	console.log("productshe product", state)
-	var products = state ? state.data :[]
-    return {products}
+	
+	const products = TgridReducer.getEntityByKey(state, "products");
+    const delete_bool = TgridReducer.getEntityByKey(state, "delete_bool");
+
+     return { products, delete_bool };
+ 
 }
 const mapDispatchToProps = dispatch => {
   return {

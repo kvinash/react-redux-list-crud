@@ -237,22 +237,8 @@ class ConfirmModel extends Component {
   }
 }
 const mapStateToProps = state => {
-
-    // let store_state ={};
-    // store_state.products = state ? state.data : [];
-    // store_state.delete_pro = state && state.delete_pro ? state.delete_pro : false;
-    // console.log("map",state, state.delete_bool );
-    // if(state.delete_bool){
-    //   this.props.get_allpro()
-    //   state.delete_bool =false;
-    // } else {
-    //   return state;
-    // }
-    console.log("map", state)
-    if(state)
-    console.log("deletebool", state.delete_bool)
+    
     const products = TgridReducer.getEntityByKey(state, "products");
-    console.log("pro", products)
     const delete_bool  = TgridReducer.getEntityByKey(state, "delete_bool");
     
     return {

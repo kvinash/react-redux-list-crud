@@ -4,6 +4,11 @@ import {NotificationContainer, NotificationManager} from 'react-notifications';
 import DataService from "../middlewares/dataService";
 import Constant from "../constant";
 
+const State = {
+  products :[],
+  delete_bool: false
+};
+
 export const getEntityByKey = (state, key) => {
   if(state && state[key]){
     return state[key];
@@ -23,28 +28,34 @@ const reducer = (state = {}, action) => {
       return {...state, products, delete_bool};
       break;
     }
-    case "ADD_PRODUCT_PENDING": {
-      return action.payload;
-      break;
-    }
+    // case "ADD_PRODUCT_PENDING": {
+    //   return action.payload;
+    //   break;
+    // }
     case "ADD_PRODUCT_FULFILLED": {
-      return true;
-      break;
+      const check1 = Object.assign({}, state, {delete_bool:true});
+      return check1
+      //return {...
+      
     }
-    case "EDIT_PRODUCT_PENDING": {
-      return action.payload;
-      break;
-    }
+    // case "EDIT_PRODUCT_PENDING": {
+    //   return action.payload;
+    //   break;
+    // }
     case "EDIT_PRODUCT_FULFILLED": {
-      return true;
-      break;
+      const check1 = Object.assign({}, state, {delete_bool:true});
+      console.log('check1',check1);
+      return check1;
     }
   
     case "DELETE_PRODUCT_FULFILLED": {
-      let delete_bool = true;
-      return {...state, delete_bool};
-      break
+      console.log('chwckstate', state);
+      const check1 = Object.assign({}, state, {delete_bool:true});
+      console.log('check1',check1);
+      return check1
+      //return {...state, delete_bool};
     }
+    default :return state
   }
     
 };
